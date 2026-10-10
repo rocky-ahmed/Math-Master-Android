@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Functions
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Quiz
-import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -32,7 +31,6 @@ import com.example.ui.screens.CustomizeScreen
 import com.example.ui.screens.DashboardScreen
 import com.example.ui.screens.FormulaDetailScreen
 import com.example.ui.screens.FormulasScreen
-import com.example.ui.screens.GeminiChatScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.PracticeTutorScreen
 import com.example.ui.screens.PrimesScreen
@@ -75,7 +73,6 @@ fun MainAppContent(viewModel: MathViewModel) {
                 Screen.Home,
                 Screen.Tables,
                 Screen.Dashboard,
-                Screen.Chat,
                 Screen.Quizzes,
                 Screen.Formulas,
                 Screen.Bookmarks
@@ -105,11 +102,11 @@ fun MainAppContent(viewModel: MathViewModel) {
                         modifier = Modifier.testTag("nav_item_dashboard")
                     )
                     NavigationBarItem(
-                        selected = currentScreen == Screen.Chat,
-                        onClick = { viewModel.navigateTo(Screen.Chat) },
-                        icon = { Icon(Icons.Default.SmartToy, contentDescription = "এআই চ্যাট") },
-                        label = { Text("এআই চ্যাট") },
-                        modifier = Modifier.testTag("nav_item_chat")
+                        selected = currentScreen == Screen.Bookmarks,
+                        onClick = { viewModel.navigateTo(Screen.Bookmarks) },
+                        icon = { Icon(Icons.Default.Bookmark, contentDescription = "বুকমার্ক") },
+                        label = { Text("বুকমার্ক") },
+                        modifier = Modifier.testTag("nav_item_bookmarks")
                     )
                     NavigationBarItem(
                         selected = currentScreen == Screen.Quizzes,
@@ -136,7 +133,6 @@ fun MainAppContent(viewModel: MathViewModel) {
             is Screen.Bookmarks -> BookmarksScreen(viewModel = viewModel, modifier = modifier)
             is Screen.PracticeTutor -> PracticeTutorScreen(viewModel = viewModel, modifier = modifier)
             is Screen.Dashboard -> DashboardScreen(viewModel = viewModel, modifier = modifier)
-            is Screen.Chat -> GeminiChatScreen(viewModel = viewModel, modifier = modifier)
             is Screen.Customize -> CustomizeScreen(viewModel = viewModel, modifier = modifier)
         }
     }

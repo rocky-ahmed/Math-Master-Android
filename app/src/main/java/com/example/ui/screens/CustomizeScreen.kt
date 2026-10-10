@@ -1046,16 +1046,6 @@ fun LivePreviewSection(
             defaultGradient = listOf(Color(0xFF7C3AED), Color(0xFF6D28D9)),
             testTag = "preview_module_formulas",
             onClick = {}
-        ),
-        HomeModuleItem(
-            sectionKey = SectionKey.CHAT,
-            titleBn = "গণিত এআই শিক্ষক (Gemini)",
-            subtitleBn = "যেকোনো গণিত সমস্যা বা সূত্রের ধাপে ধাপে সমাধান",
-            badgeBn = "এআই সহকারী",
-            defaultIcon = AvailableIcon.SMART_TOY.toImageVector(),
-            defaultGradient = listOf(Color(0xFF8B5CF6), Color(0xFF6D28D9)),
-            testTag = "preview_module_chat",
-            onClick = {}
         )
     )
 

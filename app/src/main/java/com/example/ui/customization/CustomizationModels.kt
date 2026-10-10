@@ -105,7 +105,6 @@ enum class AvailableIcon(val id: String, val displayNameBn: String) {
  * Stable identifiers for each home screen section.
  */
 enum class SectionKey(val id: String, val titleBn: String, val defaultIcon: AvailableIcon) {
-    CHAT("section_chat", "গণিত এআই শিক্ষক (Gemini)", AvailableIcon.SMART_TOY),
     DASHBOARD("section_dashboard", "অগ্রগতি ও পরিসংখ্যান ড্যাশবোর্ড", AvailableIcon.BAR_CHART),
     TABLES("section_tables", "গুণ ও নামতা (১ থেকে ৪০)", AvailableIcon.MENU_BOOK),
     PRIMES("section_primes", "মৌলিক সংখ্যা (১ থেকে ২০০)", AvailableIcon.LOOKS_ONE),

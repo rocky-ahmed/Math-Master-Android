@@ -146,18 +146,30 @@ class ExampleRobolectricTest {
     }
 
     @Test
-    fun `verify gemini chat initial state and model switching`() {
-        val app = ApplicationProvider.getApplicationContext<android.app.Application>()
-        val viewModel = com.example.ui.MathViewModel(app)
-        assertEquals(1, viewModel.chatMessages.value.size)
-        assertFalse(viewModel.chatMessages.value[0].isUser)
-        assertEquals(com.example.ai.GeminiModelType.FLASH, viewModel.selectedGeminiModel.value)
+    fun `verify prime numbers magic code for 1 to 100 and 101 to 200`() {
+        val magic100 = PrimeNumberProvider.magicCode1To100
+        assertEquals("4422322321", magic100.codeString)
+        assertEquals(25, magic100.totalPrimes)
+        assertEquals(10, magic100.decadeGroups.size)
+        assertEquals(25, magic100.decadeGroups.sumOf { it.magicDigit })
+        assertEquals(listOf(4, 4, 2, 2, 3, 2, 2, 3, 2, 1), magic100.decadeGroups.map { it.magicDigit })
 
-        viewModel.setChatModel(com.example.ai.GeminiModelType.PRO)
-        assertEquals(com.example.ai.GeminiModelType.PRO, viewModel.selectedGeminiModel.value)
+        val magic200 = PrimeNumberProvider.magicCode101To200
+        assertEquals("4113122214", magic200.codeString)
+        assertEquals(21, magic200.totalPrimes)
+        assertEquals(10, magic200.decadeGroups.size)
+        assertEquals(21, magic200.decadeGroups.sumOf { it.magicDigit })
+        assertEquals(listOf(4, 1, 1, 3, 1, 2, 2, 2, 1, 4), magic200.decadeGroups.map { it.magicDigit })
 
-        viewModel.setChatModel(com.example.ai.GeminiModelType.LITE)
-        assertEquals(com.example.ai.GeminiModelType.LITE, viewModel.selectedGeminiModel.value)
+        // Verify first decade of 1-100 has 4 primes: 2, 3, 5, 7
+        assertEquals(listOf(2, 3, 5, 7), magic100.decadeGroups[0].primes)
+        // Verify last decade of 1-100 has 1 prime: 97
+        assertEquals(listOf(97), magic100.decadeGroups[9].primes)
+
+        // Verify 101-110 has 4 primes: 101, 103, 107, 109
+        assertEquals(listOf(101, 103, 107, 109), magic200.decadeGroups[0].primes)
+        // Verify 191-200 has 4 primes: 191, 193, 197, 199
+        assertEquals(listOf(191, 193, 197, 199), magic200.decadeGroups[9].primes)
     }
 
     @Test

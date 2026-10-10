@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.School
-import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Tune
 import com.example.ui.customization.CustomModuleRenderer
@@ -243,16 +242,6 @@ fun HomeScreen(
                         defaultGradient = listOf(Color(0xFFE11D48), Color(0xFFBE123C)),
                         testTag = "module_quizzes_card",
                         onClick = { viewModel.navigateTo(Screen.Quizzes) }
-                    ),
-                    HomeModuleItem(
-                        sectionKey = SectionKey.CHAT,
-                        titleBn = "গণিত এআই শিক্ষক (Gemini চ্যাটবট)",
-                        subtitleBn = "যেকোনো গণিত সমস্যা, নামতা বা সূত্রের ধাপে ধাপে সমাধান ও প্রশ্নোত্তর",
-                        badgeBn = "এআই সহকারী",
-                        defaultIcon = Icons.Default.SmartToy,
-                        defaultGradient = listOf(Color(0xFF8B5CF6), Color(0xFF6D28D9)),
-                        testTag = "module_chat_card",
-                        onClick = { viewModel.navigateTo(Screen.Chat) }
                     ),
                     HomeModuleItem(
                         sectionKey = SectionKey.DASHBOARD,

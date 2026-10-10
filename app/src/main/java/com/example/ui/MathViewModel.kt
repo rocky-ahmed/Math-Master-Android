@@ -3,10 +3,6 @@ package com.example.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ai.GeminiClient
-import com.example.ai.GeminiContent
-import com.example.ai.GeminiModelType
-import com.example.ai.GeminiPart
 import com.example.data.db.MathDatabase
 import com.example.data.model.BookmarkEntity
 import com.example.data.model.ProgressEntity
@@ -45,16 +41,8 @@ sealed class Screen(val route: String) {
     object Bookmarks : Screen("bookmarks")
     object PracticeTutor : Screen("practice_tutor")
     object Dashboard : Screen("dashboard")
-    object Chat : Screen("chat")
     object Customize : Screen("customize")
 }
-
-data class ChatMessage(
-    val id: String = java.util.UUID.randomUUID().toString(),
-    val text: String,
-    val isUser: Boolean,
-    val timestamp: Long = System.currentTimeMillis()
-)
 
 data class WeeklyDayStat(
     val dayNameBn: String,
@@ -155,22 +143,6 @@ class MathViewModel(application: Application) : AndroidViewModel(application) {
     private val _tutorFeedback = MutableStateFlow<String?>(null)
     val tutorFeedback: StateFlow<String?> = _tutorFeedback.asStateFlow()
 
-    // Gemini Chatbot State
-    private val _chatMessages = MutableStateFlow<List<ChatMessage>>(
-        listOf(
-            ChatMessage(
-                text = "নমস্কার ও স্বাগতম! আমি আপনার গণিত এআই সহকারী (AI Math Tutor)। নামতা, মৌলিক সংখ্যা, বর্গমূল, ঘনমূল বা যেকোনো বীজগণিতীয় সূত্র নিয়ে প্রশ্ন করুন!",
-                isUser = false
-            )
-        )
-    )
-    val chatMessages: StateFlow<List<ChatMessage>> = _chatMessages.asStateFlow()
-
-    private val _isChatLoading = MutableStateFlow(false)
-    val isChatLoading: StateFlow<Boolean> = _isChatLoading.asStateFlow()
-
-    private val _selectedGeminiModel = MutableStateFlow(GeminiModelType.FLASH)
-    val selectedGeminiModel: StateFlow<GeminiModelType> = _selectedGeminiModel.asStateFlow()
 
     fun navigateTo(screen: Screen) {
         val current = _screenStack.value
@@ -364,50 +336,6 @@ class MathViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // --- Gemini Chatbot Operations ---
-    fun setChatModel(model: GeminiModelType) {
-        _selectedGeminiModel.value = model
-    }
-
-    fun clearChatHistory() {
-        _chatMessages.value = listOf(
-            ChatMessage(
-                text = "নতুন চ্যাট শুরু হয়েছে। গণিত সম্পর্কিত যেকোনো প্রশ্ন করুন!",
-                isUser = false
-            )
-        )
-    }
-
-    fun sendChatMessage(text: String) {
-        val trimmed = text.trim()
-        if (trimmed.isBlank() || _isChatLoading.value) return
-
-        val userMsg = ChatMessage(text = trimmed, isUser = true)
-        val currentHistory = _chatMessages.value + userMsg
-        _chatMessages.value = currentHistory
-        _isChatLoading.value = true
-
-        viewModelScope.launch {
-            recordDailyActivity(1)
-
-            // Convert chat history to GeminiContent list for multi-turn chat
-            val apiContents = currentHistory.map { msg ->
-                GeminiContent(
-                    role = if (msg.isUser) "user" else "model",
-                    parts = listOf(GeminiPart(text = msg.text))
-                )
-            }
-
-            val reply = GeminiClient.sendChatMessage(
-                messages = apiContents,
-                modelType = _selectedGeminiModel.value
-            )
-
-            val botMsg = ChatMessage(text = reply, isUser = false)
-            _chatMessages.value = _chatMessages.value + botMsg
-            _isChatLoading.value = false
-        }
-    }
 
     // --- Streak & Daily Activity Helpers ---
     private fun getTodayDateStr(): String {
